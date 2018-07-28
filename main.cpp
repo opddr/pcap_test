@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
   struct ip *ip_head;
   struct ether_header *eth;
   struct tcphdr *tcp;
-  int ipsize;
+  int datasize;
   char *addr;
   char* dev = argv[1];
   char errbuf[PCAP_ERRBUF_SIZE];
@@ -71,9 +71,9 @@ int main(int argc, char* argv[]) {
     tcp = (struct tcphdr *)packet;
     packet += tcp->th_off * 4;
 
-    ipsize = (int)(ip_head->ip_len) - (ip_head->ip_hl * 4 + tcp->th_off * 4) ;
+    datasize = (int)(ip_head->ip_len) - (ip_head->ip_hl * 4 + tcp->th_off * 4) ;
     printf("srcport : %hu\ndstport : %hu\n\n",htons(tcp->th_sport),htons(tcp->th_dport));
-    for(int i = 0;i< ipsize; i++ )
+    for(int i = 0;i< datasize; i++ )
 	    putchar(packet[i]);
 
     printf("============================================\n");
